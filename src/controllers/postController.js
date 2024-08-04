@@ -9,8 +9,13 @@ const getPosts = async (req, res) => {
     author,
     draft: includeDrafts === 'true' ? undefined : false,
   };
-
-  let query = queryBuilder('SELECT * FROM posts WHERE 1=1', filters, params);
+  let query = queryBuilder(`
+    SELECT p.slug, p.title, p.content, p.draft, p.created_at, p.updated_at, 
+           c.name as category, a.name as author 
+    FROM posts p 
+    JOIN categories c ON p.category_id = c.id 
+    JOIN authors a ON p.author_id = a.id 
+    WHERE 1=1`, filters, params);
 
   if (sort) {
     query += ` ORDER BY ${sort}`;
@@ -41,12 +46,12 @@ const getPostBySlug = async (req, res) => {
 
   try {
     const result = await pool.query(`
-      SELECT p.*, c.name as category, a.name as author
-      FROM posts p
-      JOIN categories c ON p.category_id = c.id
-      JOIN authors a ON p.author_id = a.id
-      WHERE p.slug = $1
-    `, [slug]);
+      SELECT p.slug, p.title, p.content, p.draft, p.created_at, p.updated_at, 
+             c.name as category, a.name as author 
+      FROM posts p 
+      JOIN categories c ON p.category_id = c.id 
+      JOIN authors a ON p.author_id = a.id 
+      WHERE p.slug = $1`, [slug]);
     if (result.rows.length > 0) {
       const post = result.rows[0];
       if (post.draft && includeDrafts !== 'true') {
