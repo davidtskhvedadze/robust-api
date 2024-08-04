@@ -157,6 +157,82 @@ async function getData(key) {
   });
 }
 ```
+
+## API Endpoints
+Here are the endpoints to test the API:
+
+- **Fetch all posts**
+    ```http
+    http://localhost:3001/v1/posts
+    ```
+    Fetches all posts from the database.
+     **Example Response:**
+    ```json
+    {
+      "data": [
+        {
+          "slug": "how-to-learn-javascript-in-2024",
+          "title": "How to Learn JavaScript in 2024",
+          "content": "Content of the post...",
+          "draft": false,
+          "created_at": "2024-01-01T00:00:00Z",
+          "updated_at": "2024-01-01T00:00:00Z",
+          "category": "Programming",
+          "author": "Jane Doe"
+        }
+      ],
+      "metadata": {
+        "count": 1,
+        "limit": null,
+        "offset": null
+      }
+    }
+    ```
+
+- **Fetch Posts by Category**
+    ```http
+    http://localhost:3001/v1/posts?category=Programming
+    ```
+    Fetches posts filtered by the specified category.
+
+- **Fetch Posts by Author**
+    ```http
+    http://localhost:3001/v1/posts?author=Jane%20Doe
+    ```
+    Fetches posts written by the specified author.
+
+- **Fetch a Single Post by Slug**
+    ```http
+    http://localhost:3001/v1/posts/how-to-learn-javascript-in-2024
+    ```
+    Fetches a single post identified by its slug.
+
+- **Fetch a Draft Post**
+    ```http
+    http://localhost:3001/v1/posts/draft-post-example
+    ```
+    Fetches a draft post identified by its slug.
+
+- **Fetch a Draft Post with includeDrafts=true**
+    ```http
+    http://localhost:3001/v1/posts/draft-post-example?includeDrafts=true
+    ```
+    Fetches a draft post identified by its slug, including drafts in the results.
+
+- **Fetch Posts with Pagination and Sorting**
+    ```http
+    http://localhost:3001/v1/posts?limit=10&sort=created_at
+    ```
+    Fetches posts with pagination and sorting applied. The [`limit`](command:_github.copilot.openSymbolFromReferences?%5B%22limit%22%2C%5B%7B%22uri%22%3A%7B%22%24mid%22%3A1%2C%22fsPath%22%3A%22%2Fhome%2Fdavidtskhvedadze%2FCodesmith%20Repos%2Fsimple-api%2FREADME.md%22%2C%22external%22%3A%22file%3A%2F%2F%2Fhome%2Fdavidtskhvedadze%2FCodesmith%2520Repos%2Fsimple-api%2FREADME.md%22%2C%22path%22%3A%22%2Fhome%2Fdavidtskhvedadze%2FCodesmith%20Repos%2Fsimple-api%2FREADME.md%22%2C%22scheme%22%3A%22file%22%7D%2C%22pos%22%3A%7B%22line%22%3A189%2C%22character%22%3A35%7D%7D%5D%5D "Go to definition") parameter specifies the number of posts per page, and the [`sort`](command:_github.copilot.openSymbolFromReferences?%5B%22sort%22%2C%5B%7B%22uri%22%3A%7B%22%24mid%22%3A1%2C%22fsPath%22%3A%22%2Fhome%2Fdavidtskhvedadze%2FCodesmith%20Repos%2Fsimple-api%2FREADME.md%22%2C%22external%22%3A%22file%3A%2F%2F%2Fhome%2Fdavidtskhvedadze%2FCodesmith%2520Repos%2Fsimple-api%2FREADME.md%22%2C%22path%22%3A%22%2Fhome%2Fdavidtskhvedadze%2FCodesmith%20Repos%2Fsimple-api%2FREADME.md%22%2C%22scheme%22%3A%22file%22%7D%2C%22pos%22%3A%7B%22line%22%3A189%2C%22character%22%3A44%7D%7D%5D%5D "Go to definition") parameter specifies the sorting order.
+
+- **Fetch Non-Existent Post**
+    ```http
+    http://localhost:3001/v1/posts/non-existent-slug
+    ```
+    Attempts to fetch a post that does not exist, useful for testing error handling.
+    
+
+
 ## Extensibility
 The use of middleware and modular route handling makes the API extensible. New features can be added with minimal changes to existing code. Middleware functions can be easily added or modified to handle new types of requests or to implement additional functionality. Similarly, new routes can be added in separate modules without affecting the existing routes.
 
