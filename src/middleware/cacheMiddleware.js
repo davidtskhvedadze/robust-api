@@ -1,16 +1,16 @@
 const { createClient } = require('redis');
-const dotenv = require('dotenv');
-dotenv.config();
+const logger = require('./logger');
+const config = require('../utils/config');
 
 const redisClient = createClient({
-    password: process.env.REDIS_PASSWORD,
+    password: config.REDIS_PASSWORD,
     socket: {
-        host: process.env.REDIS_HOST,
-        port: process.env.REDIS_PORT
+        host: config.REDIS_HOST,
+        port: config.REDIS_PORT
     }
 });
 
-redisClient.connect().catch(console.error);
+redisClient.connect().catch(logger.error);
 
 const cacheMiddleware = async (req, res, next) => {
     const key = req.originalUrl;
@@ -20,7 +20,7 @@ const cacheMiddleware = async (req, res, next) => {
             return res.json(JSON.parse(cachedResponse));
         }
     } catch (err) {
-        console.error('Error fetching from Redis', err);
+        logger.error('Error fetching from Redis', err);
     }
     res.sendResponse = res.json;
     res.json = (body) => {

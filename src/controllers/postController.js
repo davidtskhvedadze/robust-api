@@ -1,5 +1,6 @@
 const pool = require('../config/database');
 const queryBuilder = require('../utils/queryBuilder');
+const logger = require('../utils/logger');
 
 const getPosts = async (req, res) => {
   const { category, author, includeDrafts, limit, sort } = req.query;
@@ -35,7 +36,7 @@ const getPosts = async (req, res) => {
       },
     });
   } catch (error) {
-    console.error('Error querying the database', error);
+    logger.error('Error querying the database', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };
@@ -62,7 +63,7 @@ const getPostBySlug = async (req, res) => {
       res.status(404).json({ error: 'Post not found' });
     }
   } catch (error) {
-    console.error('Error querying the database', error);
+    logger.error('Error querying the database', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };
