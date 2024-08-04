@@ -1,3 +1,5 @@
+// Exporting the logging functions
+
 const info = (...params) => {
     console.log(...params)
   }

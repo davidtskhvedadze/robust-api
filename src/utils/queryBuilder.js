@@ -1,3 +1,5 @@
+// Helper function to build a query string based on the filters passed in
+
 const buildQuery = (baseQuery, filters, params) => {
   let query = baseQuery;
   Object.keys(filters).forEach((key) => {

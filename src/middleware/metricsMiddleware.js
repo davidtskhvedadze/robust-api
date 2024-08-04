@@ -33,13 +33,20 @@ const httpResponseSizeBytes = new promClient.Histogram({
 });
 
 const metricsMiddleware = (req, res, next) => {
+  // Start the timer to measure the duration of the HTTP request
   const end = httpRequestDurationMicroseconds.startTimer();
+
+  // Record the size of the incoming request
   const requestSize = parseInt(req.headers['content-length']) || 0;
   httpRequestSizeBytes.observe({ method: req.method, route: req.route ? req.route.path : 'unknown' }, requestSize);
 
+  // When the response is finished, record the size of the response and stop the timer
   res.on('finish', () => {
+    // Record the size of the outgoing response
     const responseSize = parseInt(res.getHeader('Content-Length')) || 0;
     httpResponseSizeBytes.observe({ method: req.method, route: req.route ? req.route.path : 'unknown' }, responseSize);
+
+    // Increment the counter for total requests and record the duration of the request
     httpRequestsTotal.inc({ method: req.method, route: req.route ? req.route.path : 'unknown', status_code: res.statusCode });
     end({ method: req.method, route: req.route ? req.route.path : 'unknown', status_code: res.statusCode });
   });
