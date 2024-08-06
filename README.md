@@ -69,7 +69,7 @@ This is a simple Express.js application that includes middleware for logging and
 6. Open Grafana in your browser (default: `http://localhost:3000`), add Prometheus as a data source, and create dashboards to visualize your metrics.
 
 ## Metrics
-We are collecting the following types of metrics to monitor the performance and usage of our application:
+I am collecting the following types of metrics to monitor the performance and usage of our application:
 
 - **Request Duration**: Measures the duration of HTTP requests in seconds. This helps in understanding the latency of the application.
     ```javascript
@@ -124,7 +124,7 @@ We are collecting the following types of metrics to monitor the performance and 
 This should help you set up and visualize the metrics in Grafana.    
 
 ## Redis Caching
-We use Redis to cache data to improve the performance of our application. By caching frequently accessed data, we can reduce the load on our database and speed up response times.
+I use Redis to cache data to improve the performance of our application. By caching frequently accessed data, we can reduce the load on our database and speed up response times.
 
 ### Example Usage
 ```javascript
@@ -235,4 +235,38 @@ Here are the endpoints to test the API:
 
 ## Extensibility
 The use of middleware and modular route handling makes the API extensible. New features can be added with minimal changes to existing code. Middleware functions can be easily added or modified to handle new types of requests or to implement additional functionality. Similarly, new routes can be added in separate modules without affecting the existing routes.
+
+## Tradeoffs Considered
+
+1. **Database Choice**:
+    - **PostgreSQL**: Chosen for its robustness, scalability, and support for complex queries.
+    - **MongoDB**: Considered for its flexibility and ease of use with JSON-like documents, but avoided due to the need for complex relational queries.
+
+2. **Caching Strategy**:
+    - **Redis**: Chosen for its speed and support for various data structures.
+    - **In-Memory Caching**: Considered for simplicity, but avoided due to scalability concerns.
+
+3. **Metrics Collection**:
+    - **Prometheus**: Chosen for its powerful querying capabilities and integration with Grafana.
+    - **Custom Logging**: Considered for simplicity, but avoided due to lack of standardization and visualization capabilities.
+
+4. **API Framework**:
+    - **Express.js**: Chosen for its simplicity, flexibility, and large ecosystem.
+    - **Koa.js**: Considered for its modern design and async/await support, but avoided due to smaller community and ecosystem.
+
+### Paths Avoided
+
+1. **Using a NoSQL Database**:
+    - Avoided due to the need for complex relational queries and transactions which are better supported by PostgreSQL.
+
+2. **In-Memory Caching**:
+    - Avoided due to scalability concerns and the need for a distributed caching solution provided by Redis.
+
+3. **Custom Metrics Collection**:
+    - Avoided due to the lack of standardization and visualization capabilities compared to Prometheus and Grafana.
+
+4. **Using a Different API Framework**:
+    - Avoided Koa.js and other frameworks due to the larger ecosystem and community support available for Express.js.
+
+By considering these tradeoffs and making informed decisions, I aimed to build a robust, scalable, and maintainable application.
 
